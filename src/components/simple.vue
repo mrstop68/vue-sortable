@@ -29,20 +29,32 @@
       </div>
   
     </div>
+   <div>
+    <ul id="myTable">
+      <li>deneme 1 </li>
+      <li>deneme 2 </li>
+      <li>deneme 3 </li>
+    </ul>
+   </div>
   </template>
   
   <script>
   import draggable from "vuedraggable";
+  import Sortable from "sortablejs";
   let id = 1;
   export default {
     name: "simpleS",
     display: "Simple",
     order: 0,
     components: {
-      draggable
+      draggable,
     },
     data() {
       return {
+        options: {
+                handle: '.handle',
+                filter: '.disabled'
+            },
         enabled: true,
         myArray: [
           { name: "Item", id: 0 },
@@ -51,9 +63,20 @@
         ],
         dragging: false,
         oldIndex:'',
-        newIndex:''
+        newIndex:'',
+        sortable:''
+
       };
     },
+    mounted() {
+   const element = document.querySelector("#myTable"); // grab the element containing the <tr> elements
+   this.sortable = Sortable.create(element, {
+      onEnd(event) { // gets called when dragging ended
+          console.log(event.oldIndex)
+          console.log(event.newIndex)
+      }
+   });
+      },
     computed: {
       dragOptions() {
       return {
